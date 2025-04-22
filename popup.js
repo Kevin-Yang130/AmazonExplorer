@@ -15,7 +15,7 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
     showStatus('Scraping review...', 'success');
 
     // Send message to content script to scrape one review
-    chrome.tabs.sendMessage(tab.id, { action: "scrapeOneReview" }, (response) => {
+    chrome.tabs.sendMessage(tab.id, { action: "scrapeAllReviews" }, (response) => {
         if (response.success) {
             const { reviewTitle, reviewStars, reviewText } = response;
             cachedReview = { reviewTitle, reviewStars, reviewText }; 
@@ -23,14 +23,6 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
             showStatus('Review scraped successfully!', 'success');
             console.log(reviewStars)
             showScrapedData({reviewTitle, reviewStars});
-            
-            // Send the review to the background script
-            // chrome.runtime.sendMessage({
-            //     action: "openLLM",
-            //     reviewTitle,
-            //     reviewStars,
-            //     reviewText
-            //   });
               
         } else {
             showStatus('No review text found on this page!', 'error');
@@ -49,7 +41,6 @@ document.getElementById('analyzeButton').addEventListener('click', () => {
         ...cachedReview
       });
   });
-  
   
 
 function showStatus(message, type) {

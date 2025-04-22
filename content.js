@@ -28,10 +28,56 @@ function extractOneReview() {
       };
 }
 
+function extractAllReviews() {
+    console.log('Extracting all reviews...');
+  
+    const reviewElements = document.querySelectorAll('[data-hook="review"]');
+    const reviews = [];
+  
+    reviewElements.forEach((el, i) => {
+      // Get review title (fallback: no title element shown in your screenshot)
+      const titleEl = el.querySelector('[data-hook="review-title"] span:not(.a-letter-space)');
+      const reviewTitle = titleEl?.textContent.trim() || '(No title)';
+  
+      // Get stars rating from alt text like "5.0 out of 5 stars"
+      const starEl = el.querySelector('[data-hook="review-star-rating"] .a-icon-alt');
+      const starText = starEl?.textContent.trim() || '';
+      const reviewStars = parseFloat(starText) || null;
+  
+      // Get review body text
+      const bodyEl = document.querySelector('[data-hook="review-collapsed"]');
+      const reviewText = bodyEl?.textContent.trim() || '';
+  
+  
+      if (reviewText) {
+        reviews.push({
+          reviewTitle,
+          reviewStars,
+          reviewText,
+        });
+  
+        console.log(`Review ${i + 1}`);
+        console.log(`Review title: ` + reviewTitle);
+        console.log(`Review Stars: ` + reviewStars);
+        console.log(`Review Text: ` + reviewText);
+
+
+      } else {
+        console.log(`Skipping review ${i + 1} — no body text found.`);
+      }
+    });
+  
+    return {
+      success: reviews.length > 0,
+      reviews
+    };
+}
+  
+  
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "scrapeOneReview") {
-        const reviewData = extractOneReview();
+    if (request.action === "scrapeAllReviews") {
+        const reviewData = extractAllReviews();
         sendResponse(reviewData);
     }
     return true;

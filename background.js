@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("Stars: " +reviewStars)
       console.log("text: " + reviewText)
 
-      const prompt = `Please analyze this Amazon review:\n\n${reviewText}`;
+      const prompt = `Give me a concise list of pros and cons of this product given these reviews: \n\n${reviewText}`;
     
       // Open ChatGPT
       chrome.tabs.create({ url: "https://chat.openai.com/", active: true }, (tab) => {
