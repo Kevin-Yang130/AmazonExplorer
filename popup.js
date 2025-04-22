@@ -2,9 +2,12 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
     // Get the current active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
-    // Check if we're on an Amazon product page
-    if (!tab.url.includes('amazon.com')) {
-        alert('Please navigate to an Amazon product page first!');
+    // Check if we're on a supported product page
+    const isAmazon = tab.url.includes('amazon.com');
+    const isEbay = tab.url.includes('ebay.com');
+    
+    if (!isAmazon && !isEbay) {
+        alert('Please navigate to an Amazon or eBay product page first!');
         return;
     }
 
