@@ -1,0 +1,15 @@
+{
+  "name": "amazonexplorer",
+  "version": "1.0.0",
+  "description": "This Chrome extension scrapes reviews from Amazon product pages and analyzes them using LLMs (ChatGPT, DeepSeek, etc.).",
+  "main": "background.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^4.4.9"
+  }
+}

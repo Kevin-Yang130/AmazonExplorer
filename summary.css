@@ -1,0 +1,25 @@
+/* summary.css - Styles for the in-page summary panel */
+#review-summary-panel {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: Arial, sans-serif;
+    z-index: 10000;
+  }
+  #review-summary-panel h3 {
+    margin: 0 0 12px;
+    font-size: 1.1em;
+  }
+  #review-summary-panel canvas {
+    display: block;
+    margin-bottom: 16px;
+    width: 100% !important;
+    height: auto !important;
+  }
