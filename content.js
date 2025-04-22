@@ -36,8 +36,13 @@ function extractAllReviews() {
   
     reviewElements.forEach((el, i) => {
       // Get review title (fallback: no title element shown in your screenshot)
-      const titleEl = el.querySelector('[data-hook="review-title"] span:not(.a-letter-space)');
-      const reviewTitle = titleEl?.textContent.trim() || '(No title)';
+      const titleAnchor = el.querySelector('[data-hook="review-title"]');
+const directSpans = titleAnchor?.querySelectorAll(':scope > span') || [];
+const reviewTitle = directSpans[1]?.textContent.trim() || '(No title)';
+
+
+
+
   
       // Get stars rating from alt text like "5.0 out of 5 stars"
       const starEl = el.querySelector('[data-hook="review-star-rating"] .a-icon-alt');
@@ -45,9 +50,8 @@ function extractAllReviews() {
       const reviewStars = parseFloat(starText) || null;
   
       // Get review body text
-      const bodyEl = document.querySelector('[data-hook="review-collapsed"]');
+      const bodyEl = el.querySelector('[data-hook="review-collapsed"]') || el.querySelector('[data-hook="review-body"]');
       const reviewText = bodyEl?.textContent.trim() || '';
-  
   
       if (reviewText) {
         reviews.push({
@@ -72,7 +76,6 @@ function extractAllReviews() {
       reviews
     };
 }
-  
   
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
