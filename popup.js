@@ -21,10 +21,13 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
             showScrapedData({reviewTitle, reviewStars});
             
             // Send the review to the background script
-            chrome.runtime.sendMessage({
-                action: "openLLM",
-                reviewText: reviewText
-            });
+            // chrome.runtime.sendMessage({
+            //     action: "openLLM",
+            //     reviewTitle,
+            //     reviewStars,
+            //     reviewText
+            //   });
+              
         } else {
             showStatus('No review text found on this page!', 'error');
         }
