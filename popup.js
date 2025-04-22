@@ -16,16 +16,16 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
     showStatus('Scraping review...', 'success');
 
     // Send message to content script to scrape one review
-    chrome.tabs.sendMessage(tab.id, { action: "scrapeOneReview" }, (response) => {
-        if (response && response.reviewText) {
-            showStatus('Review scraped successfully!', 'success');
-            showScrapedData(response.reviewText);
+    chrome.tabs.sendMessage(tab.id, { action: "scrapeAllReviews" }, (response) => {
+        if (response && response.reviews) {
+            showStatus('Reviews scraped successfully!', 'success');
+            showScrapedData(response.reviews.join('\n'));
             
             // Send the review to the background script
-            chrome.runtime.sendMessage({
-                action: "openLLM",
-                reviewText: response.reviewText
-            });
+            // chrome.runtime.sendMessage({
+            //     action: "openLLM",
+            //     reviewText: response.reviews
+            // });
         } else {
             showStatus('No review text found on this page!', 'error');
         }
