@@ -1,5 +1,14 @@
 /* ebay-content.js - eBay Review Scraper & LLM Integration */
 
+console.log('eBay content script loaded!');
+
+// Basic message listener
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  console.log('Message received in eBay content script:', request);
+  sendResponse({success: true, count: 0});
+  return true;
+});
+
 // Extract reviews from eBay product pages
 function extractEbayReviews() {
     const reviews = [];
@@ -9,51 +18,62 @@ function extractEbayReviews() {
     const productTitle = document.querySelector('h1.x-item-title__mainTitle')?.textContent.trim() || 
                        document.querySelector('h1.product-title')?.textContent.trim() || '';
     
-    // Look for overall product rating
-    const ratingElement = document.querySelector('div.reviews-star-rating span.star-rating') || 
-                        document.querySelector('div.ebay-star-rating') || 
-                        document.querySelector('span.sar-rating');
+    // Get overall rating if available
+    const ratingElement = document.querySelector('.star-ratings') || 
+                        document.querySelector('.ebay-star-rating');
     const averageRating = ratingElement ? ratingElement.textContent.trim() : '';
     
-    // Look for total review count
-    const totalReviewsElement = document.querySelector('div.reviews-total-rating') || 
-                              document.querySelector('a.reviews-read-all') ||
-                              document.querySelector('span.product-reviews-count');
+    // Get total reviews count if available
+    const totalReviewsElement = document.querySelector('.fdbk-container__count');
     const totalReviews = totalReviewsElement ? totalReviewsElement.textContent.trim() : '';
   
-    // Find review containers in different possible eBay layouts
-    const reviewContainers = document.querySelectorAll('div.review-item, div.ebay-review-section, div.review-card, div.ux-review-item');
+    // Target the specific container with review cards
+    const reviewCards = document.querySelectorAll('ul.fdbk-detail-list__cards > li.fdbk-container');
   
-    console.log(`🔎 Found ${reviewContainers.length} potential review elements`);
+    console.log(`🔎 Found ${reviewCards.length} eBay review cards`);
   
-    // Extract each review
-    reviewContainers.forEach((el, i) => {
+    reviewCards.forEach((card, i) => {
       console.log(`📄 Processing eBay review #${i + 1}`);
       
-      // Extract review details based on different possible eBay layouts
-      const title = el.querySelector('.review-title, .review-heading, .ux-review-title')?.textContent.trim() || '';
+      // Get rating stars (typically has aria-label with the rating)
+      const ratingEl = card.querySelector('.fdbk-container__stars');
+      const rating = ratingEl ? (ratingEl.getAttribute('aria-label') || ratingEl.textContent.trim()) : '';
       
-      // Extract rating (could be stars, text, or numeric)
-      let rating = '';
-      const ratingEl = el.querySelector('.ebay-star-rating, .review-rating, .ux-star-rating');
-      if (ratingEl) {
-        // Could be text or could have aria-label with rating
-        rating = ratingEl.getAttribute('aria-label') || ratingEl.textContent.trim();
-      }
+      // Get the review text
+      const body = card.querySelector('.fdbk-container__details')?.textContent.trim() || '';
       
-      const body = el.querySelector('.review-content, .review-text, .ux-review-text')?.textContent.trim() || '';
-      const date = el.querySelector('.review-item-date, .review-date, .ux-review-date')?.textContent.trim() || '';
+      // Get reviewer info and date
+      const reviewerEl = card.querySelector('.fdbk-container__details-heading');
+      const reviewer = reviewerEl ? reviewerEl.textContent.trim() : '';
       
-      // eBay equivalent of verified purchase
-      const verifiedEl = el.querySelector('.review-item-verified, .review-verified, .ux-review-verified');
-      const verified = verifiedEl ? 'Verified Purchase' : '';
+      // Get date from the container
+      const dateEl = card.querySelector('.fdbk-container__date');
+      const date = dateEl ? dateEl.textContent.trim() : '';
       
-      // Helpful votes
-      const helpfulEl = el.querySelector('.review-helpful-votes, .review-helpful, .ux-review-helpful');
+      // Get if reviewer is a verified buyer
+      const verifiedEl = card.querySelector('.fdbk-container__verified');
+      const verified = verifiedEl ? 'Verified Buyer' : '';
+      
+      // Helpful votes (if available)
+      const helpfulEl = card.querySelector('.fdbk-container__helpful');
       const helpful = helpfulEl ? helpfulEl.textContent.trim() : '';
+      
+      // Construct a title from the rating or first part of the review
+      const title = rating || (body.length > 30 ? body.substring(0, 30) + '...' : body);
   
-      if (title || body) {
-        reviews.push({ title, rating, body, date, verified, helpful, productTitle, averageRating, totalReviews });
+      if (body) {
+        reviews.push({ 
+          title, 
+          rating, 
+          text: body, 
+          date, 
+          reviewer,
+          verified,
+          helpful,
+          productTitle,
+          productRating: averageRating,
+          totalReviews
+        });
         console.log(`✔️ Added eBay review:`, { title, rating });
       }
     });
@@ -71,7 +91,7 @@ function extractEbayReviews() {
   Date: ${r.date}
   Verified: ${r.verified}
   Helpful: ${r.helpful}
-  Content: ${r.body}
+  Content: ${r.text}
   ---`
     )).join('\n');
   }

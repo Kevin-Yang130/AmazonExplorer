@@ -1,3 +1,5 @@
+console.log('Background script loaded!');
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "openLLM") {
         // Get the default prompt from storage
