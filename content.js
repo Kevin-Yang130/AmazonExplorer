@@ -23,7 +23,8 @@ function extractOneReview() {
     return {
         success:true,
         reviewTitle,
-        reviewText
+        reviewStars,
+        reviewText,
       };
 }
 

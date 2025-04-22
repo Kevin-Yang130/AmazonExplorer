@@ -15,9 +15,10 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
     // Send message to content script to scrape one review
     chrome.tabs.sendMessage(tab.id, { action: "scrapeOneReview" }, (response) => {
         if (response.success) {
-            const { reviewTitle,reviewStars, reviewText } = response;
+            const { reviewTitle, reviewStars, reviewText } = response;
             showStatus('Review scraped successfully!', 'success');
-            showScrapedData(reviewTitle);
+            console.log(reviewStars)
+            showScrapedData({reviewTitle, reviewStars});
             
             // Send the review to the background script
             chrome.runtime.sendMessage({
@@ -37,8 +38,11 @@ function showStatus(message, type) {
     statusDiv.style.display = 'block';
 }
 
-function showScrapedData(text) {
+function showScrapedData({ reviewTitle, reviewStars }) {
     const dataDiv = document.getElementById('scrapedData');
-    dataDiv.textContent = text;
+    dataDiv.innerHTML = `
+        <h3>${reviewTitle}</h3>
+        <h3>Stars: <strong>${reviewStars}</strong></h3>
+    `;
     dataDiv.style.display = 'block';
-} 
+}
