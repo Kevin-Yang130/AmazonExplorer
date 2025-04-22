@@ -1,4 +1,6 @@
-document.getElementById('analyzeButton').addEventListener('click', async () => {
+let cachedReview = null; // store review data between button clicks
+
+document.getElementById('scrapeButton').addEventListener('click', async () => {
     // Get the current active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
@@ -16,6 +18,8 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
     chrome.tabs.sendMessage(tab.id, { action: "scrapeOneReview" }, (response) => {
         if (response.success) {
             const { reviewTitle, reviewStars, reviewText } = response;
+            cachedReview = { reviewTitle, reviewStars, reviewText }; 
+
             showStatus('Review scraped successfully!', 'success');
             console.log(reviewStars)
             showScrapedData({reviewTitle, reviewStars});
@@ -34,6 +38,20 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
     });
 });
 
+document.getElementById('analyzeButton').addEventListener('click', () => {
+    if (!cachedReview) {
+      showStatus('Please scrape a review first.', 'error');
+      return;
+    }
+    
+    chrome.runtime.sendMessage({
+        action: "openLLM",
+        ...cachedReview
+      });
+  });
+  
+  
+
 function showStatus(message, type) {
     const statusDiv = document.getElementById('status');
     statusDiv.textContent = message;
@@ -49,3 +67,4 @@ function showScrapedData({ reviewTitle, reviewStars }) {
     `;
     dataDiv.style.display = 'block';
 }
+

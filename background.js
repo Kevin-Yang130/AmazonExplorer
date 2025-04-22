@@ -1,9 +1,8 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if (request.action === "openLLM") {
-      const reviewTitle = request.reviewTitle;
-      const reviewStars = request.reviewStars;
-      const reviewText = request.reviewText;
+      const { reviewTitle, reviewStars, reviewText } = request;
+
       console.log("Title: " + reviewTitle)
       console.log("Stars: " +reviewStars)
       console.log("text: " + reviewText)
