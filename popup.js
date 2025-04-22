@@ -14,14 +14,15 @@ document.getElementById('analyzeButton').addEventListener('click', async () => {
 
     // Send message to content script to scrape one review
     chrome.tabs.sendMessage(tab.id, { action: "scrapeOneReview" }, (response) => {
-        if (response && response.reviewText) {
+        if (response.success) {
+            const { reviewTitle,reviewStars, reviewText } = response;
             showStatus('Review scraped successfully!', 'success');
-            showScrapedData(response.reviewText);
+            showScrapedData(reviewTitle);
             
             // Send the review to the background script
             chrome.runtime.sendMessage({
                 action: "openLLM",
-                reviewText: response.reviewText
+                reviewText: reviewText
             });
         } else {
             showStatus('No review text found on this page!', 'error');
