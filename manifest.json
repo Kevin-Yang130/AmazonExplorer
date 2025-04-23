@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Duck Scraper",
+  "name": "Amazon Review Analyzer",
   "version": "1.0",
   "description": "Scrapes Amazon reviews and analyzes them using LLMs",
   "permissions": [
@@ -12,15 +12,15 @@
   "host_permissions": [
     "https://www.amazon.com/*",
     "https://chat.openai.com/*",
-    "https://chatgpt.com/",
+    "https://chatgpt.com/*",
     "https://chat.deepseek.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "logo.png",
-      "48": "logo.png",
-      "128": "logo.png"
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
     }
   },
   "options_page": "options.html",
@@ -30,12 +30,17 @@
   "content_scripts": [
     {
       "matches": ["https://www.amazon.com/*"],
-      "js": ["content.js"]
+      "js": [
+        "dist/summary.bundle.js",
+        "content.js",
+        "summary.js"
+      ],
+      "css": ["summary.css"]
     }
   ],
   "icons": {
-    "16": "logo.png",
-    "48": "logo.png",
-    "128": "logo.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   }
 } 

@@ -4,12 +4,16 @@
   "description": "This Chrome extension scrapes reviews from Amazon product pages and analyzes them using LLMs (ChatGPT, DeepSeek, etc.).",
   "main": "background.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild summary.js --bundle --outfile=dist/summary.bundle.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chart.js": "^4.4.9"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.2"
   }
 }
