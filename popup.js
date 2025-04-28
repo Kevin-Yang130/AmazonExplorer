@@ -5,8 +5,8 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
     // Check if we're on an Amazon product page
-    if (!tab.url.includes('amazon.com')) {
-        showStatus('Please navigate to an Amazon product page first!', 'error');
+    if (!tab.url.includes('amazon.com') && !tab.url.includes('ebay.com')) {
+        showStatus('Please navigate to an Amazon or eBay product page first!', 'error');
         return;
     }
 
@@ -52,16 +52,29 @@ function showScrapedData(reviews) {
     const dataDiv = document.getElementById('scrapedData');
   
     dataDiv.innerHTML = reviews.map(r => {
-      const starCount = Math.round(r.reviewStars || 0);
-      const stars = '⭐'.repeat(starCount);
+      let starsHtml = '';
+      if (r.reviewStars) {
+        const starCount = Math.round(r.reviewStars);
+        starsHtml = `<span style="font-size: 1.2em;">${'⭐'.repeat(starCount)}</span>`;
+      }
+
+      let reviewTitleHtml = '';
+      if (r.reviewTitle) {
+        reviewTitleHtml = `<strong>${r.reviewTitle}</strong>`;
+      }
+  
+      let reviewTextHtml = '';
+      if (r.reviewText) {
+        reviewTextHtml = `<em>${r.reviewText}</em>`;
+      }
   
       return `
         <div style="margin-bottom: 1em;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <strong>${r.reviewTitle}</strong>
-            <span style="font-size: 1.2em;">${stars}</span>
+            ${reviewTitleHtml}
+            ${starsHtml}
           </div>
-          <em>${r.reviewText}</em>
+          ${reviewTextHtml}
         </div>
       `;
     }).join('');

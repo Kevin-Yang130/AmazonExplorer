@@ -1,3 +1,5 @@
+console.log('Background script loaded!');
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "openLLM") {
       const reviews = request.reviews;
@@ -18,9 +20,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   
         reviews.forEach((r, i) => {
           prompt += `Review ${i + 1}:\n`;
-          prompt += `Title: ${r.reviewTitle}\n`;
-          prompt += `Stars: ${r.reviewStars}\n`;
-          prompt += `Text: ${r.reviewText}\n\n`;
+          if (r.reviewTitle) {
+            prompt += `Title: ${r.reviewTitle}\n`;
+          }
+          if (r.reviewStars) {
+            prompt += `Stars: ${r.reviewStars}\n`;
+          }
+          if (r.reviewText) {
+            prompt += `Text: ${r.reviewText}\n\n`;
+          }
         });
   
         // Open ChatGPT and inject the prompt
