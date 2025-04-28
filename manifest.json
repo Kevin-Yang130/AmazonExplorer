@@ -1,8 +1,12 @@
 {
   "manifest_version": 3,
+<<<<<<< HEAD
   "name": "Duck Scraper",
+=======
+  "name": "Review Analyzer",
+>>>>>>> 4728a0ba4acc862741f2a1c9c1799fbcba5cb4cf
   "version": "1.0",
-  "description": "Scrapes Amazon reviews and analyzes them using LLMs",
+  "description": "Scrapes Amazon and eBay reviews and analyzes them using LLMs",
   "permissions": [
     "activeTab",
     "storage",
@@ -11,6 +15,7 @@
   ],
   "host_permissions": [
     "https://www.amazon.com/*",
+    "https://www.ebay.com/*",
     "https://chat.openai.com/*",
     "https://chatgpt.com/",
     "https://chat.deepseek.com/*"

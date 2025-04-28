@@ -1,3 +1,5 @@
+console.log('Background script loaded!');
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "openLLM") {
       const reviews = request.reviews;
