@@ -4,18 +4,9 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
     // Get the current active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     
-<<<<<<< HEAD
     // Check if we're on an Amazon product page
     if (!tab.url.includes('amazon.com') && !tab.url.includes('ebay.com')) {
         showStatus('Please navigate to an Amazon or eBay product page first!', 'error');
-=======
-    // Check if we're on a supported product page
-    const isAmazon = tab.url.includes('amazon.com');
-    const isEbay = tab.url.includes('ebay.com');
-    
-    if (!isAmazon && !isEbay) {
-        alert('Please navigate to an Amazon or eBay product page first!');
->>>>>>> 4728a0ba4acc862741f2a1c9c1799fbcba5cb4cf
         return;
     }
 
@@ -23,7 +14,6 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
     document.getElementById('scrapedData').style.display = 'none';
     showStatus('Scraping review...', 'success');
 
-<<<<<<< HEAD
     chrome.tabs.sendMessage(tab.id, { action: "scrapeAllReviews" }, (response) => {
         if (response.success && response.reviews.length > 0) {
           cachedReviews = response.reviews; // save array of reviews
@@ -31,19 +21,6 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
     
           // Show first 3 reviews in popup for preview
           showScrapedData(cachedReviews.slice(0, 6));
-=======
-    // Send message to content script to scrape one review
-    chrome.tabs.sendMessage(tab.id, { action: "scrapeAllReviews" }, (response) => {
-        if (response && response.reviews) {
-            showStatus('Reviews scraped successfully!', 'success');
-            showScrapedData(response.reviews.join('\n'));
-            
-            // Send the review to the background script
-            // chrome.runtime.sendMessage({
-            //     action: "openLLM",
-            //     reviewText: response.reviews
-            // });
->>>>>>> 4728a0ba4acc862741f2a1c9c1799fbcba5cb4cf
         } else {
           showStatus('No reviews found on this page!', 'error');
         }
