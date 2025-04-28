@@ -1,10 +1,6 @@
 {
   "manifest_version": 3,
-<<<<<<< HEAD
   "name": "Duck Scraper",
-=======
-  "name": "Review Analyzer",
->>>>>>> 4728a0ba4acc862741f2a1c9c1799fbcba5cb4cf
   "version": "1.0",
   "description": "Scrapes Amazon and eBay reviews and analyzes them using LLMs",
   "permissions": [
