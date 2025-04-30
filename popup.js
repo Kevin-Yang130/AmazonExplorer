@@ -1,4 +1,20 @@
-let cachedReviews = []; // store multiple reviews
+// Initialize reviews from storage when popup opens
+let cachedReviews = [];
+
+// Load existing reviews when popup opens
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.storage.local.get(['savedReviews'], (result) => {
+    if (result.savedReviews) {
+      cachedReviews = result.savedReviews;
+      
+      // Show status if we have reviews
+      if (cachedReviews.length > 0) {
+        showStatus(`${cachedReviews.length} reviews loaded from storage`, 'success');
+        showScrapedData(cachedReviews.slice(0, 6));
+      }
+    }
+  });
+});
 
 document.getElementById('scrapeButton').addEventListener('click', async () => {
     // Get the current active tab
@@ -10,21 +26,26 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
         return;
     }
 
-    // Clear previous data
+    // Clear previous data display but not stored reviews
     document.getElementById('scrapedData').style.display = 'none';
     showStatus('Scraping review...', 'success');
 
     chrome.tabs.sendMessage(tab.id, { action: "scrapeAllReviews" }, (response) => {
         if (response.success && response.reviews.length > 0) {
-          cachedReviews = response.reviews; // save array of reviews
-          showStatus(`Scraped ${cachedReviews.length} reviews!`, 'success');
+          // Add new reviews to existing ones
+          cachedReviews = cachedReviews.concat(response.reviews);
+          
+          // Save to storage
+          chrome.storage.local.set({ savedReviews: cachedReviews });
+          
+          showStatus(`Total reviews: ${cachedReviews.length} (Added ${response.reviews.length} new)`, 'success');
     
-          // Show first 3 reviews in popup for preview
+          // Show first 6 reviews in popup for preview
           showScrapedData(cachedReviews.slice(0, 6));
         } else {
           showStatus('No reviews found on this page!', 'error');
         }
-      });
+    });
 });
 
 document.getElementById('analyzeButton').addEventListener('click', () => {
