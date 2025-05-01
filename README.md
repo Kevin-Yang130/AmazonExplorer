@@ -1,13 +1,17 @@
-# Amazon Review Analyzer Chrome Extension
+# Review Analyzer Chrome Extension
 
-This Chrome extension scrapes reviews from Amazon product pages and analyzes them using LLMs (ChatGPT, DeepSeek, etc.).
+This Chrome extension scrapes reviews from Amazon and Ebay product pages for analysis using LLMs (ChatGPT, DeepSeek, etc.). Users will be able to obtain review titles, stars, and text content, and then be brought to an LLM webpage of choice to paste in the reviews for summarization. The goal of this extension is to make the process of obtaining more detailed information from reviews quickly (beyond just average star rating) much easier.
 
 ## Features
 
-- Scrapes reviews from Amazon product pages
+- Scrapes reviews from Amazon and Ebay product pages
 - Configurable default prompt for analysis
 - Automatically opens LLM chat interface with formatted reviews
 - Supports multiple LLM platforms (ChatGPT, DeepSeek)
+
+# Known Bugs and Incomplete Features
+- No known bugs
+- Possible feature of saving scraped reviews and having the option to put multiple into LLM for comparison
 
 ## Installation
 

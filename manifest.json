@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Amazon Review Analyzer",
   "version": "1.0",
-  "description": "Scrapes Amazon reviews and analyzes them using LLMs",
+  "description": "Scrapes Amazon and eBay reviews and analyzes them using LLMs",
   "permissions": [
     "activeTab",
     "storage",
@@ -11,6 +11,7 @@
   ],
   "host_permissions": [
     "https://www.amazon.com/*",
+    "https://www.ebay.com/*",
     "https://chat.openai.com/*",
     "https://chatgpt.com/*",
     "https://chat.deepseek.com/*"
@@ -30,12 +31,20 @@
   "content_scripts": [
     {
       "matches": ["https://www.amazon.com/*"],
+<<<<<<< HEAD
       "js": [
         "dist/summary.bundle.js",
         "content.js",
         "summary.js"
       ],
       "css": ["summary.css"]
+=======
+      "js": ["content.js"]
+    },
+    {
+      "matches": ["https://www.ebay.com/*"],
+      "js": ["ebay-content.js"]
+>>>>>>> 2d896c6b1d7294c0064599f4bd26e29a24b0345c
     }
   ],
   "icons": {
