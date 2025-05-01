@@ -9,6 +9,10 @@ This Chrome extension scrapes reviews from Amazon and Ebay product pages for ana
 - Automatically opens LLM chat interface with formatted reviews
 - Supports multiple LLM platforms (ChatGPT, DeepSeek)
 
+# Known Bugs and Incomplete Features
+- No known bugs
+- Possible feature of saving scraped reviews and having the option to put multiple into LLM for comparison
+
 ## Installation
 
 1. Download or clone this repository
