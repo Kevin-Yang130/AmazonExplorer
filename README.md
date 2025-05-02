@@ -6,6 +6,7 @@ This Chrome extension scrapes reviews from Amazon and Ebay product pages for ana
 
 - Scrapes reviews from Amazon product pages (Kevin)
 - Scrapes reviews from Ebay product pages (Wesley)
+- Saves the last scraped product reviews to be displayed if user closes and re-opens the extension (Wesley)
 - Configurable default prompt for analysis (Kevin)
 - Automatically opens LLM chat interface with formatted reviews (Kevin)
 - Sidebar that uses Chart.js to compute an aggregate review summary, complete with a rating histogram, overall impression of product, etc. (Winnie)
