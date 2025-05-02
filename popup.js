@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Show status if we have reviews
       if (cachedReviews.length > 0) {
-        showStatus(`${cachedReviews.length} reviews loaded from storage`, 'success');
+        showStatus(`${cachedReviews.length} reviews loaded from last scraping`, 'success');
         showScrapedData(cachedReviews.slice(0, 6));
       }
     }
@@ -32,16 +32,15 @@ document.getElementById('scrapeButton').addEventListener('click', async () => {
 
     chrome.tabs.sendMessage(tab.id, { action: "scrapeAllReviews" }, (response) => {
         if (response.success && response.reviews.length > 0) {
-          // Add new reviews to existing ones
-          cachedReviews = cachedReviews.concat(response.reviews);
-          
+          cachedReviews = response.reviews;
+
           // Save to storage
           chrome.storage.local.set({ savedReviews: cachedReviews });
           
-          showStatus(`Total reviews: ${cachedReviews.length} (Added ${response.reviews.length} new)`, 'success');
+          showStatus(`Total reviews scraped: ${response.reviews.length}`, 'success');
     
           // Show first 6 reviews in popup for preview
-          showScrapedData(cachedReviews.slice(0, 6));
+          showScrapedData(response.reviews.slice(0, 6));
         } else {
           showStatus('No reviews found on this page!', 'error');
         }
