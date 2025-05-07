@@ -1,23 +1,28 @@
 function extractAllReviews() {
     console.log('Extracting all reviews...');
   
-    const reviewElements = document.querySelectorAll('.fdbk-container__details__comment span');
+    const firstTabCell = document.querySelector('.fdbk-detail-list__cards');
     const reviews = [];
+    console.log(firstTabCell);
     
-    if (reviewElements && reviewElements.length > 0) {
-        console.log(`Found ${reviewElements.length} reviews`);
+    if (firstTabCell) {
+        const reviewElements = firstTabCell.querySelectorAll('.fdbk-container__details__comment span');
         
-        reviewElements.forEach((element, index) => {
-            const reviewText = element.textContent.trim();
-            if (reviewText) {
-                reviews.push({
-                    reviewText,
-                    reviewTitle: null,
-                    reviewStars: null,
-                });
-                console.log(`Extracted review #${index + 1}`);
-            }
-        });
+        if (reviewElements && reviewElements.length > 0) {
+            console.log(`Found ${reviewElements.length} reviews in first tab`);
+            
+            reviewElements.forEach((element, index) => {
+                const reviewText = element.textContent.trim();
+                if (reviewText) {
+                    reviews.push({
+                        reviewText,
+                        reviewTitle: null,
+                        reviewStars: null,
+                    });
+                    console.log(`Extracted review #${index + 1}`);
+                }
+            });
+        }
     } 
     
     return {
