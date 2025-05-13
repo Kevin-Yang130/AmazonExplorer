@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+  
+  document.getElementById('aboutMeLink').addEventListener('click', () => {
+    chrome.tabs.create({ url: 'https://winniewngg.github.io/hugo-mock-landing-page-autodeployed/' });
+  });
 });
 
 document.getElementById('scrapeButton').addEventListener('click', async () => {
@@ -57,8 +61,7 @@ document.getElementById('analyzeButton').addEventListener('click', () => {
         action: "openLLM",
         reviews: cachedReviews 
     });
-  });
-  
+});
 
 function showStatus(message, type) {
     const statusDiv = document.getElementById('status');
@@ -66,7 +69,6 @@ function showStatus(message, type) {
     statusDiv.className = type;
     statusDiv.style.display = 'block';
 }
-
 
 function showScrapedData(reviews) {
     const dataDiv = document.getElementById('scrapedData');
@@ -100,6 +102,6 @@ function showScrapedData(reviews) {
     }).join('');
   
     dataDiv.style.display = 'block';
-  }
+}
   
   

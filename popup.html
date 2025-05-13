@@ -105,20 +105,38 @@
     .options-link:hover {
       color: #3846df;
     }
+    
+    .about-me-link {
+      display: block;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      text-decoration: none;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    
+    .about-me-link:hover {
+      color: #3846df;
+      text-decoration: underline;
+    }
 </style>
 </head>
 <body>
     <div style="text-align: center; margin-bottom: 12px;">
         <img src="logo.png" alt="PromptPicks Logo" width="225" height="225" style="border-radius: 12px;">
     </div>
-  <button id="scrapeButton">Scrape Reviews</button>
-  <button id="analyzeButton">Analyze in ChatGPT</button>
 
-  <div id="status"></div>
-  <div id="scrapedData"></div>
+    <a id="aboutMeLink" class="about-me-link">About</a>
+    
+    <button id="scrapeButton">Scrape Reviews</button>
+    <button id="analyzeButton">Analyze in ChatGPT</button>
 
-  <a href="options.html" class="options-link">⚙️ Configure Default Prompt</a>
+    <div id="status"></div>
+    <div id="scrapedData"></div>
 
-  <script src="popup.js"></script>
+    <a href="options.html" class="options-link">⚙️ Configure Default Prompt</a>
+
+    <script src="popup.js"></script>
 </body>
 </html>
